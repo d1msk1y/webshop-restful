@@ -11,5 +11,6 @@ export const initDatabase = async () => {
   } catch (err) {
     console.log('Failed to connect to database')
     console.error(err);
+    throw err;
   }
 }
