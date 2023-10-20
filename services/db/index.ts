@@ -1,5 +1,8 @@
 import mongoose, {ConnectOptions} from "mongoose";
 import colors from "colors";
+import {Product} from "../../models";
+
+export const ProductInstance = new Product();
 
 export const initDatabase = async () => {
   const mongoDB = process.env['MONGODB_CONNECT_STRING']
