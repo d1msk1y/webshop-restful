@@ -10,6 +10,35 @@ export interface IImportRequest {
   }
 }
 
+export function mapImportRequest(data: any): IImportRequest {
+  return {
+    ItemList: {
+      Header: {
+        PriceProvider: data.Artikelliste.Header[0].Preisanbieter[0],
+        Date: data.Artikelliste.Header[0].Datum[0]
+      },
+      Items: data.Artikelliste.Artikel.map((artikel: any) => ({
+        ItemNumber: artikel.ENr[0],
+        SupplierItemNumber: artikel.LieferantenArtikelNummer[0],
+        SupplierNumber: artikel.LieferantenNummer[0],
+        SupplierName: artikel.LieferantenName[0],
+        DeliveryStatus: artikel.Lieferstatus[0],
+        Price: parseFloat(artikel.Preis[0]),
+        PriceRange: parseInt(artikel.Preismenge[0]), // Assuming "Preismenge" is a numerical value
+        Discount: parseFloat(artikel.Rabatt[0].replace('%', '')),
+        ProductGroup: artikel.Warengruppe[0],
+        Logistic: {
+          MeasureUnit: artikel.Logistik[0].Masseinheit[0],
+          ContentUnit: artikel.Logistik[0].Inhaltseinheit[0],
+          Quantity: parseFloat(artikel.Logistik[0].Inhaltsmenge[0]),
+          MinQuantity: parseFloat(artikel.Logistik[0].Mindestbestellmenge[0])
+        }
+      }))
+    }
+  };
+}
+
+
 export interface ILogistic {
   MeasureUnit: string;
   ContentUnit: string;
