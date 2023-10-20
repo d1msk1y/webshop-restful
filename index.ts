@@ -3,20 +3,21 @@ import colors from "colors";
 import dotenv from 'dotenv';
 
 dotenv.config();
-const bodyParser = require('body-parser');
-const jsonParser = bodyParser.text();
 
 const app = express();
 const port = 3000;
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-  console.log(req.body);
+const xmlparser = require('express-xml-bodyparser');
+app.use(xmlparser({
+  normalizeTags: false
+}))
+
+app.post('/', function (req, res, next) {
+  console.log('Raw XML: ' + req.body);
+  console.log('Parsed XML: ' + JSON.stringify(req.body, null, 2));
+  res.send('OK' + req.body.ENr);
 });
 
-app.post('/', jsonParser, function (req, res) {
-  res.json({requestBody: req.body})
-})
 app.listen(port, () => {
   console.log(`App is listening at http://localhost:${port}`);
 });
