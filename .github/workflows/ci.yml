@@ -1,7 +1,7 @@
 name: CI Workflow
 
 on:
-  pull_request:
+  push:
     branches: [ main ]
 
 jobs:
@@ -14,6 +14,13 @@ jobs:
       MONGODB_ADMINPASSWORD: ${{ secrets.MONGODB_ADMINPASSWORD }}
 
     steps:
+      - name: Echo environment variables
+        run: |
+          echo "Connection string exists: ${{ secrets.MONGODB_CONNECT_STRING != '' }}"
+          echo "Docker connection string exists: ${{ secrets.MONGODB_CONNECT_DOCKER != '' }}"
+          echo "Admin username exists: ${{ secrets.MONGODB_ADMINUSERNAME != '' }}"
+          echo "Admin password exists: ${{ secrets.MONGODB_ADMINPASSWORD != '' }}"
+
       - name: Checkout code
         uses: actions/checkout@v2
 
