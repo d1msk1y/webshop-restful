@@ -20,14 +20,15 @@ export const initDatabase = async () => {
   });
 
   mongoose.connection.on('disconnected', () => {
-    console.log(colors.bgYellow('Disconnected from MongoDB.'));
+    console.log('Disconnected from MongoDB.');
   });
 
   try {
     await mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true} as ConnectOptions);
+    console.log('Connected to MongoDB!');
+    return true;
   } catch (err) {
-    console.log('Failed to initiate connection to database')
-    console.error(err);
-    throw err;
+    console.error(new Error("MongoDB Connection Error"));
+    return false;
   }
 }
