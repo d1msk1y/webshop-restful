@@ -2,6 +2,8 @@ import express from 'express';
 import colors from "colors";
 import dotenv from 'dotenv';
 import {mapImportRequest} from "./models";
+import DbParser from "./services/parser";
+import {initDatabase} from "./services/db";
 
 dotenv.config();
 
@@ -18,8 +20,10 @@ app.post('/', function (req, res, next) {
   console.log('Parsed XML: ' + JSON.stringify(req.body, null, 2));
   const importData = mapImportRequest(req.body);
   console.log(importData.ItemList.Items[0]);
-
-  res.send('OK' + req.body.ENr);
+  DbParser.parseProduct(importData.ItemList.Items[0]).then(r => {
+    console.log(colors.bgGreen('Product saved successfully!'))
+  });
+  res.send('OK ' + JSON.stringify(importData.ItemList.Items[0], null, 2));
 });
 
 app.listen(port, () => {
@@ -29,7 +33,7 @@ app.listen(port, () => {
 async function main(): Promise<void> {
   try {
     console.log(process.env.MONGODB_CONNECT_STRING)
-    // await initDatabase();
+    await initDatabase();
     console.log("Hello World!");
   } catch (err) {
     throw err;

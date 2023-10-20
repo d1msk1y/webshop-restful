@@ -3,7 +3,7 @@ import colors from "colors";
 import {ProductInstance} from "../db";
 
 export default class DbParser {
-  public async parseProduct(product: IProduct) {
+  public static async parseProduct(product: IProduct) {
     // Do some parsing stuff here
     const productData = ProductInstance.mapProductModel(product);
     const filter = {ItemNumber: product.ItemNumber};
