@@ -1,5 +1,15 @@
 import mongoose, {mongo} from "mongoose";
 
+export interface IImportRequest {
+  ItemList: {
+    Header: {
+      PriceProvider: string;
+      Date: string;
+    }
+    Items: IProduct[];
+  }
+}
+
 export interface ILogistic {
   MeasureUnit: string;
   ContentUnit: string;
