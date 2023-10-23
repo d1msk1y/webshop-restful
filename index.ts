@@ -3,7 +3,8 @@ import colors from "colors";
 import dotenv from 'dotenv';
 import {mapImportData} from "./models";
 import DbParser from "./services/parser";
-import {initDatabase} from "./services/db";
+import {initDatabase, ProductInstance} from "./services/db";
+import DbFetcher from "./services/fetcher";
 
 dotenv.config();
 
@@ -26,6 +27,12 @@ app.post('/import', function (req, res, next) {
     console.log(colors.bgGreen('Products saved successfully!'))
   );
   res.send('OK ' + JSON.stringify(importData.ItemList.Items[0], null, 2));
+});
+
+app.get('/export', function (req, res) {
+  const exportData = DbFetcher.getProducts(ProductInstance);
+  console.log(JSON.stringify(exportData, null, 2));
+  res.send(exportData);
 });
 
 app.listen(port, () => {
