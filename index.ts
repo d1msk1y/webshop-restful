@@ -5,6 +5,7 @@ import {mapImportData} from "./models";
 import DbParser from "./services/parser";
 import {initDatabase, ProductInstance} from "./services/db";
 import DbFetcher from "./services/fetcher";
+import path from "path";
 
 dotenv.config();
 
@@ -15,6 +16,9 @@ const xmlparser = require('express-xml-bodyparser');
 app.use(xmlparser({
   normalizeTags: false
 }))
+
+require('hbs');
+app.set('view engine', 'hbs');
 
 app.post('/import', function (req, res, next) {
   const overwrite = req.get('overwrite') === 'true';
@@ -33,6 +37,15 @@ app.get('/export', async function (req, res) {
   const exportData = await DbFetcher.getProducts(ProductInstance);
   console.log(JSON.stringify(exportData, null, 2));
   res.send({exportData, quantity: exportData.length});
+});
+
+app.get('/', function (req, res) {
+  // TODO add User Interface (handlebars, like Huawei Fusion Plugin)
+  console.log(`Request body: ${JSON.stringify(req.body, null, 2)}`);
+  console.log(`request headers: ${JSON.stringify(req.headers, null, 2)}`)
+  res.render(path.join('index.hbs'), {
+    title: 'Thing'
+  });
 });
 
 app.listen(port, () => {
