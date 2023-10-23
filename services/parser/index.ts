@@ -3,7 +3,7 @@ import colors from "colors";
 import {ProductInstance} from "../db";
 
 export default class DbParser {
-  public static async parseProduct(product: IProduct) {
+  public static async parseProduct(product: IProduct, overwrite: boolean = false) {
     // Do some parsing stuff here
     const productData = ProductInstance.mapProductModel(product);
     const filter = {ItemNumber: product.ItemNumber};
@@ -13,13 +13,17 @@ export default class DbParser {
         console.log(colors.bgYellow(`Same product data already exists {
           ItemNumber: ${product.ItemNumber},
           SupplierItemNumber: ${product.SupplierItemNumber}
-         }
-         ! Overwriting...`));
+         }`));
         delete productData._id;
-        await ProductInstance.ProductModel.updateOne(filter, {$set: product});
+        if (overwrite) {
+          console.log(colors.bgYellow('Overwriting...'));
+          await ProductInstance.ProductModel.updateOne(filter, {$set: product});
+        } else {
+          console.log(colors.bgYellow('Skipping...'));
+          return;
+        }
       } else {
-        const newProduct = new ProductInstance.ProductModel;
-        newProduct.save();
+        productData.save();
         console.log(colors.bgGreen('Product saved successfully!'));
       }
     } catch (err) {
