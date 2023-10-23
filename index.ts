@@ -15,14 +15,16 @@ app.use(xmlparser({
   normalizeTags: false
 }))
 
-app.post('/', function (req, res, next) {
+app.post('/import', function (req, res, next) {
+  const overwrite = req.get('overwrite') === 'true';
+  console.log('Overwrite: ' + overwrite)
   console.log('Raw XML: ' + req.body);
   console.log('Parsed XML: ' + JSON.stringify(req.body, null, 2));
   const importData = mapImportRequest(req.body);
   console.log(importData.ItemList.Items[0]);
-  DbParser.parseProduct(importData.ItemList.Items[0]).then(r => {
-    console.log(colors.bgGreen('Product saved successfully!'))
-  });
+  DbParser.parseProducts(importData.ItemList.Items, overwrite).then(r =>
+    console.log(colors.bgGreen('Products saved successfully!'))
+  );
   res.send('OK ' + JSON.stringify(importData.ItemList.Items[0], null, 2));
 });
 

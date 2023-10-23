@@ -1,6 +1,7 @@
 import {IProduct, Product} from "../../models";
 import {Model} from "mongoose";
 import colors from "colors";
+import DbParser from "../parser";
 
 export default class DbFetcher {
   public static async getProducts<T extends IProduct>(Product: Product): Promise<T[]> {
@@ -10,14 +11,6 @@ export default class DbFetcher {
       return model as T[];
     }
     return model as T[];
-  }
-
-  public static async getStationData(Station: Product): Promise<any> {
-    const model = await this.getProductModel(Station).find().sort({collectTime: 1});
-    if (!model) {
-      return model as IProduct[];
-    }
-    return model as IProduct[];
   }
 
   private static getProductModel(type: Product): Model<any> {
