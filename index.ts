@@ -1,7 +1,7 @@
 import express from 'express';
 import colors from "colors";
 import dotenv from 'dotenv';
-import {mapImportRequest} from "./models";
+import {mapImportData} from "./models";
 import DbParser from "./services/parser";
 import {initDatabase} from "./services/db";
 
@@ -20,7 +20,7 @@ app.post('/import', function (req, res, next) {
   console.log('Overwrite: ' + overwrite)
   console.log('Raw XML: ' + req.body);
   console.log('Parsed XML: ' + JSON.stringify(req.body, null, 2));
-  const importData = mapImportRequest(req.body);
+  const importData = mapImportData(req.body);
   console.log(importData.ItemList.Items[0]);
   DbParser.parseProducts(importData.ItemList.Items, overwrite).then(r =>
     console.log(colors.bgGreen('Products saved successfully!'))

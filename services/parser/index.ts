@@ -2,7 +2,7 @@ import {IProduct} from "../../models";
 import colors from "colors";
 import {ProductInstance} from "../db";
 
-export default class DbParser {
+class DbParser {
   public static async parseProducts(products: IProduct[], overwrite: boolean = false) {
     // Do some parsing stuff here
     for (const item of products) {
@@ -32,3 +32,5 @@ export default class DbParser {
     }
   }
 }
+
+export default DbParser
