@@ -25,7 +25,6 @@ export const initDatabase = async () => {
 
   try {
     await mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true} as ConnectOptions);
-    console.log('Connected to MongoDB!');
     return true;
   } catch (err) {
     console.error(new Error("MongoDB Connection Error"));
