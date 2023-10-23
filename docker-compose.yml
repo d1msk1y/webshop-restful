@@ -7,7 +7,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     depends_on:
-        - mongo
+      - mongo
     links:
       - mongo
     restart: unless-stopped

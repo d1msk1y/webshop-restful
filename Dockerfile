@@ -33,4 +33,7 @@ COPY --from=builder ./usr/src/app ./
 
 EXPOSE 8080
 EXPOSE 3000
-CMD [ "node", "dist/index.js" ]
+
+ARG RUN_ENV=production
+
+CMD if [ "$RUN_ENV" = "test" ] ; then npm test ; else node dist/index.js ; fi
