@@ -29,10 +29,10 @@ app.post('/import', function (req, res, next) {
   res.send('OK ' + JSON.stringify(importData.ItemList.Items[0], null, 2));
 });
 
-app.get('/export', function (req, res) {
-  const exportData = DbFetcher.getProducts(ProductInstance);
+app.get('/export', async function (req, res) {
+  const exportData = await DbFetcher.getProducts(ProductInstance);
   console.log(JSON.stringify(exportData, null, 2));
-  res.send(exportData);
+  res.send({exportData, quantity: exportData.length});
 });
 
 app.listen(port, () => {
