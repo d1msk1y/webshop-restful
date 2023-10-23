@@ -1,9 +1,11 @@
 import express from 'express';
 import colors from "colors";
 import dotenv from 'dotenv';
-import {mapImportRequest} from "./models";
+import {mapImportData} from "./models";
 import DbParser from "./services/parser";
-import {initDatabase} from "./services/db";
+import {initDatabase, ProductInstance} from "./services/db";
+import DbFetcher from "./services/fetcher";
+import path from "path";
 
 dotenv.config();
 
@@ -15,15 +17,35 @@ app.use(xmlparser({
   normalizeTags: false
 }))
 
-app.post('/', function (req, res, next) {
+require('hbs');
+app.set('view engine', 'hbs');
+
+app.post('/import', function (req, res, next) {
+  const overwrite = req.get('overwrite') === 'true';
+  console.log('Overwrite: ' + overwrite)
   console.log('Raw XML: ' + req.body);
   console.log('Parsed XML: ' + JSON.stringify(req.body, null, 2));
-  const importData = mapImportRequest(req.body);
+  const importData = mapImportData(req.body);
   console.log(importData.ItemList.Items[0]);
-  DbParser.parseProduct(importData.ItemList.Items[0]).then(r => {
-    console.log(colors.bgGreen('Product saved successfully!'))
-  });
+  DbParser.parseProducts(importData.ItemList.Items, overwrite).then(r =>
+    console.log(colors.bgGreen('Products saved successfully!'))
+  );
   res.send('OK ' + JSON.stringify(importData.ItemList.Items[0], null, 2));
+});
+
+app.get('/export', async function (req, res) {
+  const exportData = await DbFetcher.getProducts(ProductInstance);
+  console.log(JSON.stringify(exportData, null, 2));
+  res.send({exportData, quantity: exportData.length});
+});
+
+app.get('/', function (req, res) {
+  // TODO add User Interface (handlebars, like Huawei Fusion Plugin)
+  console.log(`Request body: ${JSON.stringify(req.body, null, 2)}`);
+  console.log(`request headers: ${JSON.stringify(req.headers, null, 2)}`)
+  res.render(path.join('index.hbs'), {
+    title: 'Thing'
+  });
 });
 
 app.listen(port, () => {

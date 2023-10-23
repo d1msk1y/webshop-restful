@@ -10,7 +10,7 @@ export interface IImportRequest {
   }
 }
 
-export function mapImportRequest(data: any): IImportRequest {
+export function mapImportData(data: any): IImportRequest {
   return {
     ItemList: {
       Header: {
