@@ -42,6 +42,11 @@ app.get('/export', async function (req, res) {
   res.send({exportData, quantity: exportData.length});
 });
 
+app.get('/search', async function (req, res) {
+  let searchTerm = req.body.searchTerm;
+  let results = DbFetcher.getProducts(ProductInstance, {ItemNumber: searchTerm});
+  res.render('index.hbs', {results});
+});
 
 app.use(express.json());
 app.post('/', function (req, res) {
