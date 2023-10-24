@@ -7,18 +7,21 @@ import {initDatabase, ProductInstance} from "./services/db";
 import DbFetcher from "./services/fetcher";
 import path from "path";
 
+import cors from "cors";
+
+import xmlparser from 'express-xml-bodyparser';
+
 dotenv.config();
 
 const app = express();
 const port = 3000;
-
-const xmlparser = require('express-xml-bodyparser');
 app.use(xmlparser({
   normalizeTags: false
 }))
 
 require('hbs');
 app.set('view engine', 'hbs');
+app.use(cors());
 
 app.post('/import', function (req, res, next) {
   const overwrite = req.get('overwrite') === 'true';
@@ -34,15 +37,25 @@ app.post('/import', function (req, res, next) {
 });
 
 app.get('/export', async function (req, res) {
-  const exportData = await DbFetcher.getProducts(ProductInstance);
+  const exportData = await DbFetcher.getProducts(ProductInstance, {ItemNumber: req.get('ItemID')});
   console.log(JSON.stringify(exportData, null, 2));
   res.send({exportData, quantity: exportData.length});
 });
 
-app.get('/', function (req, res) {
+app.post('/search', async function (req, res) {
+  let searchTerm = req.body.searchTerm;
+  console.log(`searchTerm: ${searchTerm}`);
+  let results = DbFetcher.getProducts(ProductInstance, {ItemNumber: searchTerm});
+  res.render('index.hbs', {results});
+});
+
+app.use(express.json());
+app.post('/', function (req, res) {
   // TODO add User Interface (handlebars, like Huawei Fusion Plugin)
-  console.log(`Request body: ${JSON.stringify(req.body, null, 2)}`);
+  console.log(`request body: ${JSON.stringify(req.body, null, 2)}`);
   console.log(`request headers: ${JSON.stringify(req.headers, null, 2)}`)
+  const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+  console.log(`request origin: ${fullUrl}`)
   res.render(path.join('index.hbs'), {
     title: 'Thing'
   });

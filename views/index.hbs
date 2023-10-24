@@ -9,14 +9,14 @@
 </head>
 <body>
 
-
 <div class="container custom-modal">
   <div class="row">
     <div class="col-md-6 mb-3">
-      <div class="form-group">
-        <label for="searchInput">Suche</label>
-        <input class="form-control custom-input" id="searchInput" type="text">
-      </div>
+      <form action="http://localhost:3000/search" class="form-group" method="POST">
+        <label for="searchTerm">Search:</label>
+        <input class="form-control custom-input" type="text" name="searchTerm" id="searchTerm" required>
+        <button type="submit">Search</button>
+      </form>
     </div>
     <div class="col-md-6 mb-3">
       <div class="form-group">
