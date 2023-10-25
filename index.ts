@@ -1,7 +1,7 @@
 import express from 'express';
 import colors from "colors";
 import dotenv from 'dotenv';
-import {mapImportData} from "./models";
+import {IProduct, mapImportData, Product} from "./models";
 import DbParser from "./services/parser";
 import {initDatabase, ProductInstance} from "./services/db";
 import DbFetcher from "./services/fetcher";
@@ -11,6 +11,10 @@ import cors from "cors";
 
 import xmlparser from 'express-xml-bodyparser';
 
+import hbs from "hbs";
+import * as fs from "fs";
+import {renderProduct} from "./components/search/product";
+
 dotenv.config();
 
 const app = express();
@@ -18,8 +22,6 @@ const port = 3000;
 app.use(xmlparser({
   normalizeTags: false
 }))
-
-require('hbs');
 app.set('view engine', 'hbs');
 app.use(cors());
 
@@ -47,7 +49,8 @@ app.use(express.urlencoded({extended: true})); // to parse x-www-form-urlencoded
 app.post('/search', async function (req, res) {
   let searchTerm = req.body.searchTerm
   console.log(`request body: ${JSON.stringify(req.body, null, 2)}`);
-  const results = DbFetcher.getProducts(ProductInstance, {ItemNumber: searchTerm});
+  const products: IProduct[] = await DbFetcher.getProducts(ProductInstance, {ItemNumber: searchTerm});
+  const results = products.map(product => renderProduct(product)).join('');
 
   res.render('index.hbs', {results});
 });
