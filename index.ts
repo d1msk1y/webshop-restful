@@ -42,14 +42,16 @@ app.get('/export', async function (req, res) {
   res.send({exportData, quantity: exportData.length});
 });
 
+app.use(express.json());
+app.use(express.urlencoded({extended: true})); // to parse x-www-form-urlencoded
 app.post('/search', async function (req, res) {
-  let searchTerm = req.body.searchTerm;
-  console.log(`searchTerm: ${searchTerm}`);
-  let results = DbFetcher.getProducts(ProductInstance, {ItemNumber: searchTerm});
+  let searchTerm = req.body.searchTerm
+  console.log(`request body: ${JSON.stringify(req.body, null, 2)}`);
+  const results = DbFetcher.getProducts(ProductInstance, {ItemNumber: searchTerm});
+
   res.render('index.hbs', {results});
 });
 
-app.use(express.json());
 app.post('/', function (req, res) {
   // TODO add User Interface (handlebars, like Huawei Fusion Plugin)
   console.log(`request body: ${JSON.stringify(req.body, null, 2)}`);
