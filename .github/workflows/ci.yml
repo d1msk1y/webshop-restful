@@ -9,18 +9,18 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     env:
-      MONGODB_CONNECT_STRING: ${{ secrets.MONGODB_CONNECT_STRING }}
-      MONGODB_CONNECT_DOCKER: ${{ secrets.MONGODB_CONNECT_DOCKER }}
-      MONGODB_ADMINUSERNAME: ${{ secrets.MONGODB_ADMINUSERNAME }}
-      MONGODB_ADMINPASSWORD: ${{ secrets.MONGODB_ADMINPASSWORD }}
+      MONGODB_CONNECT_STRING: mongodb://admin:admin@mongo:27017/
+      MONGODB_CONNECT_DOCKER: mongodb://admin:admin@mongo:27017/
+      MONGODB_ADMINUSERNAME: admin
+      MONGODB_ADMINPASSWORD: admin
 
     steps:
       - name: Echo environment variables
         run: |
-          echo "Connection string exists: ${{ secrets.MONGODB_CONNECT_STRING != '' }}"
-          echo "Docker connection string exists: ${{ secrets.MONGODB_CONNECT_DOCKER != '' }}"
-          echo "Admin username exists: ${{ secrets.MONGODB_ADMINUSERNAME != '' }}"
-          echo "Admin password exists: ${{ secrets.MONGODB_ADMINPASSWORD != '' }}"
+          echo "Connection string exists: ${{ MONGODB_CONNECT_STRING}}"
+          echo "Docker connection string exists: ${{ MONGODB_CONNECT_DOCKER}}"
+          echo "Admin username exists: ${{ MONGODB_ADMINUSERNAME}}"
+          echo "Admin password exists: ${{ MONGODB_ADMINPASSWORD}}"
 
       - name: Checkout code
         uses: actions/checkout@v2
