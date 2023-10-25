@@ -49,7 +49,9 @@ app.use(express.urlencoded({extended: true})); // to parse x-www-form-urlencoded
 app.post('/search', async function (req, res) {
   let searchTerm = req.body.searchTerm
   console.log(`request body: ${JSON.stringify(req.body, null, 2)}`);
-  const products: IProduct[] = await DbFetcher.getProducts(ProductInstance, {ItemNumber: searchTerm});
+  const products: IProduct[] = await DbFetcher.getProducts(ProductInstance, {
+    ItemNumber: {$regex: new RegExp(searchTerm, 'i')}
+  });
   const results = products.map(product => renderProduct(product)).join('');
 
   res.render('index.hbs', {results});
