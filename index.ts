@@ -1,7 +1,7 @@
 import express from 'express';
 import colors from "colors";
 import dotenv from 'dotenv';
-import {mapImportData} from "./models";
+import {IProduct, mapImportData, Product} from "./models";
 import DbParser from "./services/parser";
 import {initDatabase, ProductInstance} from "./services/db";
 import DbFetcher from "./services/fetcher";
@@ -11,6 +11,10 @@ import cors from "cors";
 
 import xmlparser from 'express-xml-bodyparser';
 
+import hbs from "hbs";
+import * as fs from "fs";
+import {renderProduct} from "./components/search/product";
+
 dotenv.config();
 
 const app = express();
@@ -18,8 +22,6 @@ const port = 3000;
 app.use(xmlparser({
   normalizeTags: false
 }))
-
-require('hbs');
 app.set('view engine', 'hbs');
 app.use(cors());
 
@@ -42,14 +44,19 @@ app.get('/export', async function (req, res) {
   res.send({exportData, quantity: exportData.length});
 });
 
+app.use(express.json());
+app.use(express.urlencoded({extended: true})); // to parse x-www-form-urlencoded
 app.post('/search', async function (req, res) {
-  let searchTerm = req.body.searchTerm;
-  console.log(`searchTerm: ${searchTerm}`);
-  let results = DbFetcher.getProducts(ProductInstance, {ItemNumber: searchTerm});
+  let searchTerm = req.body.searchTerm
+  console.log(`request body: ${JSON.stringify(req.body, null, 2)}`);
+  const products: IProduct[] = await DbFetcher.getProducts(ProductInstance, {
+    ItemNumber: {$regex: new RegExp(searchTerm, 'i')}
+  });
+  const results = products.map(product => renderProduct(product)).join('');
+
   res.render('index.hbs', {results});
 });
 
-app.use(express.json());
 app.post('/', function (req, res) {
   // TODO add User Interface (handlebars, like Huawei Fusion Plugin)
   console.log(`request body: ${JSON.stringify(req.body, null, 2)}`);
