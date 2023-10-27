@@ -1,10 +1,14 @@
 import {IProduct} from "../../models";
 
+/*
+}*/
+
 export function renderProduct(product: IProduct): string {
   const deliveryBadge: string = product.DeliveryStatus === '0' ? 'badge-danger' : 'badge-success';
   const deliveryStatus: string = product.DeliveryStatus === '0' ? 'nicht' : '';
 
   return `
+     <a href="http://localhost:3000/addItem/?productNumber=${product.ItemNumber}">
       <div class="card m-1 product" style="width: 375px; height: 170px; overflow: hidden;">
           <div class="row no-gutters">
               <div class="col-md-8">
@@ -28,5 +32,6 @@ export function renderProduct(product: IProduct): string {
               </div>
           </div>
       </div>
+      </a>
   `;
 }

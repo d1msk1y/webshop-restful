@@ -71,6 +71,12 @@ app.post('/search', async function (req, res) {
   res.render('index.hbs', {results});
 });
 
+app.get('/addItem', async function (req, res) {
+  const itemNumber = req.query.productNumber;
+  console.log(itemNumber)
+  // Axios request https://my.exxas.net/cloud/9AAF40D5CBE371FEBABF6B4245C314BB/api//dokumente/${referer}/positions/addArticle
+});
+
 app.post('/', function (req, res) {
   // TODO add User Interface (handlebars, like Huawei Fusion Plugin)
   console.log(`request body: ${JSON.stringify(req.body, null, 2)}`);
