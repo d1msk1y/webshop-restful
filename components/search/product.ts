@@ -5,7 +5,7 @@ export function renderProduct(product: IProduct): string {
   const deliveryStatus: string = product.DeliveryStatus === '0' ? 'nicht' : '';
 
   return `
-      <div class="card m-2 product" style="width: 375px; height: 170px; overflow: hidden;">
+      <div class="card m-1 product" style="width: 375px; height: 170px; overflow: hidden;">
           <div class="row no-gutters">
               <div class="col-md-8">
                   <div class="card-body">

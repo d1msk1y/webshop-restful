@@ -52,7 +52,10 @@ app.post('/search', async function (req, res) {
   const products: IProduct[] = await DbFetcher.getProducts(ProductInstance, {
     ItemNumber: {$regex: new RegExp(searchTerm, 'i')}
   });
-  const results = products.map(product => renderProduct(product)).join('');
+  let results = products.map(product => renderProduct(product)).join('');
+  if (results === '') {
+    results = 'Nichts gefunden'
+  }
 
   res.render('index.hbs', {results});
 });

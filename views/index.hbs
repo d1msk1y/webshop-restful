@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Bootstrap Recreation</title>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <link href="styles.css" rel="stylesheet">
 </head>
 <body>
 
@@ -36,14 +35,13 @@
   }
 
   .custom-modal {
-    width: 100%; /* Adjust to a percentage value to fill more of the screen width */
-    max-width: 840px; /* Optional: set a maximum width if needed */
-    margin: 50px auto; /* Centers the modal horizontally */
+    max-width: 700px;
+    margin: 20px auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    background-color: #ffffff; /* White background only for the modal */
+    background-color: #ffffff;
   }
 
   .custom-button {
@@ -51,32 +49,43 @@
   }
 </style>
 
-<button class="w-100"> YO</button>
+<button class="w-100"> Test</button>
 
 <div class="container">
-  <div class="custom-modal">
-    <div class="row">
-      <div class="mb-3">
+  <div class="custom-modal justify-content-center">
+    <div class="row m-3 justify-content-center">
+      <div>
         <!-- TODO - Keep this address updated -->
-        <form action="http://localhost:3000/search" class="form-group" method="POST">
+        <form id="searchForm" action="http://localhost:3000/search" class="form-group" method="POST">
           <input class="form-control w-100 custom-input" type="text" name="searchTerm" id="searchTerm" required>
         </form>
       </div>
+      <div class="col-md-6 ">
+        <div class="form-group">
+          <select class="form-control custom-input" id="sortSelect">
+            <option>Sortieren</option>
+            <option>Preis aufsteigend</option>
+            <option>Preis absteigend</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-primary w-100 custom-button" type="submit" form="searchForm">Suchen</button>
     </div>
-  </div>
-  <div class="col-12 m-auto mt-3">
-    <div class=" row searchResults justify-content-center">
-      {{{results}}}
-    </div>
-  </div>
-  <div class="row">
-    <div class="mb-3">
-      <button class="btn btn-primary custom-button" type="submit">Filter anwenden</button>
+    <div>
     </div>
   </div>
 </div>
+<div class="col-12">
+  <div class=" row searchResults justify-content-center">
+    {{{results}}}
+  </div>
+</div>
+<div class="row">
+  <div class="mb-3">
+    <button class="btn btn-primary custom-button" type="submit">Filter anwenden</button>
+  </div>
+</div>
 
-<!-- Moved the search results here -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
