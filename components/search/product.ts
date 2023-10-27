@@ -1,15 +1,19 @@
-import {IProduct, Product} from "../../models";
+import {IProduct} from "../../models";
+
+/*
+}*/
 
 export function renderProduct(product: IProduct): string {
   const deliveryBadge: string = product.DeliveryStatus === '0' ? 'badge-danger' : 'badge-success';
   const deliveryStatus: string = product.DeliveryStatus === '0' ? 'nicht' : '';
 
   return `
-      <div class="card mb-3 product" style="width: 375px; height: 170px; overflow: hidden;">
+     <a href="http://localhost:3000/addItem/?productNumber=${product.ItemNumber}">
+      <div class="card m-1 product" style="width: 375px; height: 170px; overflow: hidden;">
           <div class="row no-gutters">
               <div class="col-md-8">
                   <div class="card-body">
-                      <h5 class="card-title">${product.ItemNumber}</h5>
+                      <h5 class="card-title">ENr. ${product.ItemNumber}</h5>                    
                       <p class="card-text"><small class="text-muted">${product.SupplierName || 'Unbekannter Lieferant'}</small></p>
                   </div>
               </div>
@@ -28,5 +32,6 @@ export function renderProduct(product: IProduct): string {
               </div>
           </div>
       </div>
+      </a>
   `;
 }
