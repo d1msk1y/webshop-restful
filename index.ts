@@ -47,12 +47,23 @@ app.get('/export', async function (req, res) {
 app.use(express.json());
 app.use(express.urlencoded({extended: true})); // to parse x-www-form-urlencoded
 app.post('/search', async function (req, res) {
-  let searchTerm = req.body.searchTerm
+  let searchTerm = req.body.searchTerm;
+  let sortOption = req.body.sortOption;
   console.log(`request body: ${JSON.stringify(req.body, null, 2)}`);
-  const products: IProduct[] = await DbFetcher.getProducts(ProductInstance, {
+  const products: IProduct[] = (await DbFetcher.getProducts(ProductInstance, {
     ItemNumber: {$regex: new RegExp(searchTerm, 'i')}
-  });
-  let results = products.map(product => renderProduct(product)).join('');
+  }))
+  const sortProducts = (): IProduct[] => {
+    if (sortOption === "1") {
+      return products.sort((a, b) => a.Price - b.Price);
+    } else if (sortOption === "-1") {
+      return products.sort((a, b) => b.Price - a.Price);
+    } else {
+      return products;
+    }
+  }
+  console.log(sortOption)
+  let results = sortProducts().map(product => renderProduct(product)).join('');
   if (results === '') {
     results = 'Nichts gefunden'
   }

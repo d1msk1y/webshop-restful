@@ -8,12 +8,6 @@
 <body>
 
 <style>
-  @page {
-    width: 10px;
-    size: 1px;
-    margin: 0;
-  }
-
   body {
     font-family: Arial, sans-serif;
     background-color: #f5f5f5; /* Added a light background for contrast */
@@ -53,33 +47,37 @@
 
 <div class="container">
   <div class="custom-modal justify-content-center">
-    <div class="row m-3 justify-content-center">
-      <div>
-        <!-- TODO - Keep this address updated -->
-        <form id="searchForm" action="http://localhost:3000/search" class="form-group" method="POST">
+    <!-- TODO - Keep this address updated -->
+    <form id="searchForm" action="http://localhost:3000/search" class="form-group" method="POST">
+      <div class="row m-3 justify-content-center">
+
+        <!-- Search Input -->
+        <div class="col-md-6 mb-2">
           <input class="form-control w-100 custom-input" type="text" name="searchTerm" id="searchTerm" required>
-        </form>
-      </div>
-      <div class="col-md-6 ">
-        <div class="form-group">
-          <select class="form-control custom-input" id="sortSelect">
-            <option>Sortieren</option>
-            <option>Preis aufsteigend</option>
-            <option>Preis absteigend</option>
+        </div>
+
+        <!-- Dropdown Selection -->
+        <div class="col-md-6 mb-2">
+          <select class="form-control custom-input" id="sortSelect" name="sortOption">
+            <option value="">Sortieren</option>
+            <option value="1">Preis aufsteigend</option>
+            <option value="-1">Preis absteigend</option>
           </select>
         </div>
+        <div class="col-12 mb-2">
+          <button class="btn btn-primary w-100 custom-button" type="submit">Suchen</button>
+        </div>
       </div>
-      <button class="btn btn-primary w-100 custom-button" type="submit" form="searchForm">Suchen</button>
-    </div>
-    <div>
-    </div>
+    </form>
   </div>
 </div>
+
 <div class="col-12">
-  <div class=" row searchResults justify-content-center">
+  <div class="row searchResults justify-content-center">
     {{{results}}}
   </div>
 </div>
+
 <div class="row">
   <div class="mb-3">
     <button class="btn btn-primary custom-button" type="submit">Filter anwenden</button>
