@@ -9,7 +9,7 @@ export function renderProduct(product: IProduct): string {
           <div class="row no-gutters">
               <div class="col-md-8">
                   <div class="card-body">
-                      <h5 class="card-title">${product.ItemNumber}</h5>
+                      <h5 class="card-title">ENr. ${product.ItemNumber}</h5>
                       <p class="card-text"><small class="text-muted">${product.SupplierName || 'Unbekannter Lieferant'}</small></p>
                   </div>
               </div>

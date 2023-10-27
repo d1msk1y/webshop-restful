@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Bootstrap Recreation</title>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
@@ -10,15 +9,30 @@
 <body>
 
 <style>
+  @page {
+    width: 10px;
+    size: 1px;
+    margin: 0;
+  }
+
   body {
     font-family: Arial, sans-serif;
     background-color: #f5f5f5; /* Added a light background for contrast */
+    width: 100%;
+    max-width: 900px; /* or whatever width you want */
   }
 
   .product {
-    border: 1px solid #ccc;
+    border: 0;
     border-radius: 5px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s, border-color 0.3s ease-in-out;
+  }
+
+  .product:hover {
+    border: 1px solid #0078a8;
+    box-shadow: 4px 4px 7px rgba(0, 120, 168, 0.4);
+    transition: box-shadow 0.3s, border-color 0.3s ease-in-out;
   }
 
   .custom-modal {
@@ -32,12 +46,14 @@
     background-color: #ffffff; /* White background only for the modal */
   }
 
-  .custom-input, .custom-button {
-
+  .custom-button {
+    background-color: #009ddb;
   }
 </style>
 
-<div class="container flex-column">
+<button class="w-100"> YO</button>
+
+<div class="container">
   <div class="custom-modal">
     <div class="row">
       <div class="mb-3">
@@ -47,15 +63,15 @@
         </form>
       </div>
     </div>
-    <div class="col-12 m-auto mt-3">
-      <div class=" row searchResults">
-        {{{results}}}
-      </div>
+  </div>
+  <div class="col-12 m-auto mt-3">
+    <div class=" row searchResults justify-content-center">
+      {{{results}}}
     </div>
-    <div class="row">
-      <div class="mb-3">
-        <button class="btn btn-primary custom-button" type="submit">Filter anwenden</button>
-      </div>
+  </div>
+  <div class="row">
+    <div class="mb-3">
+      <button class="btn btn-primary custom-button" type="submit">Filter anwenden</button>
     </div>
   </div>
 </div>
